@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Table(name = "creditscore")
 public class CreditScore {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
