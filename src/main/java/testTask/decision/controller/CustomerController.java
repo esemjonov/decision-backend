@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "customers")
+@RequestMapping(value = "customers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -23,7 +23,7 @@ public class CustomerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
-    public List<Customer> all() {
+    public List<CustomerDto> all() {
         return customerService.getAll();
     }
 
