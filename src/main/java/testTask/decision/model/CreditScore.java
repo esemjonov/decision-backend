@@ -23,7 +23,7 @@ public class CreditScore {
     private Long id;
 
     @NotNull
-    private String identitycode;
+    private String identityCode;
 
     @NotNull
     private Integer loanAmount;

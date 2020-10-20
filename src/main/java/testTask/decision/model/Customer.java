@@ -13,9 +13,9 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder(toBuilder = true)
 @Table(name = "customers")
 public class Customer {
 
@@ -24,12 +24,10 @@ public class Customer {
     private Long id;
 
     @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String identitycode;
+    private String identityCode;
 
     @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String credditModifer;
+    private String creditModifier;
 
 
 
