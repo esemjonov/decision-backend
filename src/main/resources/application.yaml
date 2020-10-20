@@ -8,14 +8,14 @@ spring:
         temp:
           use_jdbc_metadata_defaults : false
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
   datasource:
     url: jdbc:h2:./h2/heroes;AUTO_SERVER=TRUE # this one is on the disk
     driverClassName: org.h2.Driver
     username: sa
     password: sa
-    initialization-mode: always
     data: classpath:customers.sql
+
   h2:
     console:
       enabled: true
