@@ -1,6 +1,6 @@
 #FileLock
-#Tue Oct 20 22:01:35 EEST 2020
-server=192.168.1.141\:59771
+#Tue Oct 20 22:27:13 EEST 2020
+server=192.168.1.141\:51221
 hostName=inbnot088.lan
 method=file
-id=17547635aae24bb892c17fb5af26e2400323db9794b
+id=175477ad3fbaf2cae5ed54f9e0ef678290bf5b1b4ab

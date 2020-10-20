@@ -4,26 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import testTask.decision.dto.CustomerDto;
 import testTask.decision.model.Customer;
-import testTask.decision.repository.CustomerRepository;
 import testTask.decision.service.CustomerService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "customers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
+
+    /*
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    */
+    @Autowired
+    private  CustomerService customerService;
+
     @GetMapping("")
-    public List<CustomerDto> all() {
+    public List<Customer> all() {
         return customerService.getAll();
     }
 

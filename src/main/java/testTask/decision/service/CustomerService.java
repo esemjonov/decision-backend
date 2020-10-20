@@ -29,6 +29,11 @@ public class CustomerService {
                 .orElseThrow(CustomerNotFoundException::new);
     }
 
+    public List<Customer> getAll() {
+        return customerRepository.findAll();
+
+    }
+    /*
     public List<CustomerDto> getAll() {
         return customerRepository.findAll().stream()
                 .map(this::convertToDto)
@@ -36,6 +41,8 @@ public class CustomerService {
                 ;
     }
 
+
+     */
 
 
     public Customer save(Customer customer) {

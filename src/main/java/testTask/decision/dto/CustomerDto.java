@@ -10,9 +10,6 @@ import javax.persistence.Column;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ApiModel(value = "Customer")
 public class CustomerDto {
 
