@@ -29,20 +29,28 @@ public class CustomerService {
                 .orElseThrow(CustomerNotFoundException::new);
     }
 
+    public List<CustomerDto> getByIdentityCode(String identityCode) throws  CustomerNotFoundException{
+        return customerRepository.findAllByIdentityCodeLike(identityCode).stream()
+                .map(this::convertCustomer)
+                .collect(Collectors.toList());
+    }
+
+
+    private CustomerDto convertCustomer(Customer customer) {
+        CustomerDto dto = new CustomerDto();
+        dto.setId(customer.getId());
+        dto.setIdentitycode(customer.getIdentityCode());
+        dto.setCreditModifier(customer.getCreditModifier());
+        return dto;
+    }
+    
+
     public List<Customer> getAll() {
         return customerRepository.findAll();
 
     }
-    /*
-    public List<CustomerDto> getAll() {
-        return customerRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList())
-                ;
-    }
 
 
-     */
 
 
     public Customer save(Customer customer) {

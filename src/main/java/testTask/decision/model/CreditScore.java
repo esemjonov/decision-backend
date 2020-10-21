@@ -35,6 +35,15 @@ public class CreditScore {
     private Double creditScore;
 
     @NotNull
+    private String status;
+
+    @NotNull
+    private Integer approvedLoanAmount;
+
+    @NotNull
+    private Integer approvedLoanPeriodMonths;
+
+    @NotNull
     @OneToOne
     private Product product;
 }

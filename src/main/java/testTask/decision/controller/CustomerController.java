@@ -13,16 +13,14 @@ import java.util.List;
 @RequestMapping(value = "customers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
 
-    /*
+
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-    */
-    @Autowired
-    private  CustomerService customerService;
+
 
     @GetMapping("")
     public List<Customer> all() {
