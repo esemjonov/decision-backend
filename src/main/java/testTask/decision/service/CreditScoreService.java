@@ -58,10 +58,10 @@ public class CreditScoreService {
     private void SetApprovedLoanAmount(CreditScore creditScore) {
         Integer correctionToLoanAmount = 0;
 
-        if (creditScore.getLoanAmount() <= creditScore.getProduct().getLoanAmountMin()) {
+        if (creditScore.getLoanAmount() < creditScore.getProduct().getLoanAmountMin()) {
             correctionToLoanAmount = creditScore.getProduct().getLoanAmountMin() - creditScore.getLoanAmount() ;
         }
-        else if (creditScore.getLoanAmount() >= creditScore.getProduct().getLoanAmountMax()){
+        else if (creditScore.getLoanAmount() > creditScore.getProduct().getLoanAmountMax()){
             correctionToLoanAmount = creditScore.getProduct().getLoanAmountMax() - creditScore.getLoanAmount();
         }
         creditScore.setApprovedLoanAmount(correctionToLoanAmount+ creditScore.getLoanAmount());
@@ -115,6 +115,8 @@ public class CreditScoreService {
         if ((calculatedCreditScore >= 1.0) && (creditScore.getStatus().equals("string"))) {
             creditScore.setStatus("Accepted");
         }
+        else
+            creditScore.setStatus("Denied");
 
         return creditScore;
     }
