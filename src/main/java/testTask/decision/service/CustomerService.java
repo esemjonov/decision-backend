@@ -33,6 +33,7 @@ public class CustomerService {
         return customerRepository.findAllByIdentityCodeLike(identityCode).stream()
                 .map(this::convertCustomer)
                 .collect(Collectors.toList());
+
     }
 
 

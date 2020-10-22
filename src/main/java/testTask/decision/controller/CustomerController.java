@@ -1,9 +1,9 @@
 package testTask.decision.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import testTask.decision.dto.CustomerDto;
 import testTask.decision.model.Customer;
 import testTask.decision.service.CustomerService;
 
@@ -37,6 +37,12 @@ public class CustomerController {
     @PostMapping("")
     Customer newCustomer(@RequestBody Customer customer) {
         return customerService.save(customer);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{identityCode}")
+    List<CustomerDto> getByIdentityCode(@PathVariable String identityCode) {
+        return customerService.getByIdentityCode(identityCode);
     }
 
 }

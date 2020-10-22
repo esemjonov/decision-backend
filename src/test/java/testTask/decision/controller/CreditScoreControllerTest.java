@@ -34,6 +34,8 @@ class CreditScoreControllerTest {
     private static final Integer LOAN_AMOUNT = 5000;
     private static final Integer LOAN_PERIOD_MONTHS = 20;
     private static final String STATUS = "string";
+    private static final Integer APPROVED_LOAN_PERIOD_MONTHS = 0;
+    private static final Integer APPROVED_LOAN_AMOUNT = 0;
 
 
     @Autowired
@@ -135,6 +137,8 @@ class CreditScoreControllerTest {
                 .loanAmount(LOAN_AMOUNT)
                 .loanPeriodMonths(LOAN_PERIOD_MONTHS)
                 .status(STATUS)
+                .approvedLoanAmount(APPROVED_LOAN_AMOUNT)
+                .approvedLoanPeriodMonths(APPROVED_LOAN_PERIOD_MONTHS)
                 .build();
 
     }

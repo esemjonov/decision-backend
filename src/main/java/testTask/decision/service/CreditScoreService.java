@@ -17,6 +17,8 @@ import java.util.List;
 
 @Service
 public class CreditScoreService {
+    private static final Double CREDDIT_SCORE_LIMIT = 1.0;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -39,103 +41,82 @@ public class CreditScoreService {
         return creditScoreRepository.findAll();
     }
 
+
+
+
+
     public CreditScore save(CreditScore creditScore) {
-        Product product = productRepository.findById(1L)
-                .orElseThrow(ProductNotFoundException::new);
-        creditScore.setProduct(product);
-
-        creditScore.setApprovedLoanPeriodMonths(
-                creditScore.getLoanPeriodMonths() + CheckLoanPeriodMonths(creditScore,product));
-
-        SetApprovedLoanAmount(creditScore);
-
+        SetProductToCreditScore(creditScore);
         SetCreditApplicationStatus(creditScore);
 
+        if (!creditScore.getStatus().equals("Dept")){
+            SetApprovedValues(creditScore);
+        }
 
         return creditScoreRepository.save(creditScore);
     }
 
-    private void SetApprovedLoanAmount(CreditScore creditScore) {
-        Integer correctionToLoanAmount = 0;
-
-        if (creditScore.getLoanAmount() < creditScore.getProduct().getLoanAmountMin()) {
-            correctionToLoanAmount = creditScore.getProduct().getLoanAmountMin() - creditScore.getLoanAmount() ;
-        }
-        else if (creditScore.getLoanAmount() > creditScore.getProduct().getLoanAmountMax()){
-            correctionToLoanAmount = creditScore.getProduct().getLoanAmountMax() - creditScore.getLoanAmount();
-        }
-        creditScore.setApprovedLoanAmount(correctionToLoanAmount+ creditScore.getLoanAmount());
+    private void SetProductToCreditScore(CreditScore creditScore){
+        Product product = productRepository.findById(1L).orElseThrow(ProductNotFoundException::new);
+        creditScore.setProduct(product);
     }
 
-
-    private Integer CheckLoanPeriodMonths (CreditScore creditScore, Product product) {
-        Integer correctionToPeriod = 0;
-        Integer applicationLoanPeriod = creditScore.getLoanPeriodMonths();
-        Integer productLoanPeriodMin = product.getLoanPeriodMin();
-        Integer productLoanPeriodMax = product.getLoanPeriodMax();
-
-        if (applicationLoanPeriod < productLoanPeriodMin) {
-            correctionToPeriod = applicationLoanPeriod-productLoanPeriodMin;
-        }
-        else if (applicationLoanPeriod > productLoanPeriodMax) {
-            correctionToPeriod = productLoanPeriodMax - applicationLoanPeriod;
-        }
-        return correctionToPeriod;
+    Integer ensureRange(Integer value, Integer min, Integer max) {
+        return Math.min(Math.max(value, min), max);
     }
 
+    private void SetApprovedValues (CreditScore creditScore) {
+        CustomerDto customer = customerService.getByIdentityCode(creditScore.getIdentityCode()).get(0);
+        Double creditModifier = Double.valueOf(customer.getCreditModifier());
 
+        Integer newLoanAmount = ensureRange((int)(creditModifier * creditScore.getLoanPeriodMonths()), creditScore.getProduct().getLoanAmountMin(),creditScore.getProduct().getLoanAmountMax());
+        creditScore.setApprovedLoanAmount(newLoanAmount);
+        Integer newPeriod = ensureRange((int)(newLoanAmount/creditModifier),creditScore.getProduct().getLoanPeriodMin(),creditScore.getProduct().getLoanPeriodMax());
+        creditScore.setApprovedLoanPeriodMonths(newPeriod);
 
-    private CreditScore SetCreditApplicationStatus(CreditScore creditScore){
-        List<CustomerDto> customerDtoList = customerService.getByIdentityCode(creditScore.getIdentityCode());
-        CustomerDto customer = customerDtoList.get(0); // TODO error handling
-        if (customer.getCreditModifier().equals("debt")){
-            creditScore.setCreditScore((double) 0);
-            creditScore.setStatus("Dept");
-            return creditScore;
-        }
-
-        Double calculatedCreditScore = Double.valueOf((Double.parseDouble(customer.getCreditModifier())/creditScore.getLoanAmount()) * creditScore.getLoanPeriodMonths());
-        creditScore.setCreditScore(calculatedCreditScore);
-
-
-        if (CheckPeriod(creditScore)) {
-
-            creditScore.setStatus("Denied");
-            return creditScore;
-        }
-
-
-        if (CheckAmount(creditScore)) {
-
-            creditScore.setStatus("Denied");
-            return creditScore;
-        }
-
-
-        if ((calculatedCreditScore >= 1.0) && (creditScore.getStatus().equals("string"))) {
-            creditScore.setStatus("Accepted");
-        }
-        else
-            creditScore.setStatus("Denied");
-
-        return creditScore;
     }
 
-    private boolean CheckAmount(CreditScore creditScore) {
+    private void SetCreditApplicationStatus(CreditScore creditScore){
+        String creditModifier = customerService.getByIdentityCode(creditScore.getIdentityCode()).get(0).getCreditModifier();
+
+        if (creditModifier.equals("debt")){
+            SetDebtStatus(creditScore);
+        }
+        else {
+            Double calculatedCreditScore = Double.valueOf((Double.parseDouble(creditModifier)/creditScore.getLoanAmount()) * creditScore.getLoanPeriodMonths());
+            creditScore.setCreditScore(calculatedCreditScore);
+            CheckPeriod(creditScore);
+            CheckAmount(creditScore);
+            if ((calculatedCreditScore >= CREDDIT_SCORE_LIMIT) && (creditScore.getStatus().equals("string"))) {
+                creditScore.setStatus("Accepted");
+            }
+            else if (creditScore.getStatus().equals("string")) {
+                creditScore.setStatus("Denied");
+            }
+        }
+    }
+    
+    private void SetDebtStatus(CreditScore creditScore) {
+        creditScore.setCreditScore((double) 0);
+        creditScore.setStatus("Dept");
+    }
+
+    private void CheckAmount(CreditScore creditScore) {
         if (creditScore.getLoanAmount() < creditScore.getProduct().getLoanAmountMin()
-                ||   creditScore.getProduct().getLoanAmountMax() < creditScore.getLoanAmount()) {
-            return true;
+                ||   creditScore.getProduct().getLoanAmountMax() < creditScore.getLoanAmount())
+        {
+            creditScore.setStatus("Denied");
         }
-        return false;
+
     }
 
 
-    private Boolean CheckPeriod(CreditScore creditScore) {
+    private void CheckPeriod(CreditScore creditScore) {
         if (creditScore.getLoanPeriodMonths() < creditScore.getProduct().getLoanPeriodMin()
-                || creditScore.getProduct().getLoanPeriodMax() < creditScore.getLoanPeriodMonths()   ) {
-            return true;
+                || creditScore.getProduct().getLoanPeriodMax() < creditScore.getLoanPeriodMonths()   )
+        {
+            creditScore.setStatus("Denied");
         }
-        return false;
     }
 
 
