@@ -10,6 +10,7 @@ import testTask.decision.service.CustomerService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "customers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
 
