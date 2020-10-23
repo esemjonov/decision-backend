@@ -12,6 +12,7 @@ import testTask.decision.service.CreditScoreService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "creditscore", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CreditScoreController {
 
