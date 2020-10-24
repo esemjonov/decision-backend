@@ -9,6 +9,7 @@ import testTask.decision.repository.CustomerRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CustomerService {
@@ -36,7 +37,6 @@ public class CustomerService {
 
     }
 
-
     private CustomerDto convertCustomer(Customer customer) {
         CustomerDto dto = new CustomerDto();
         dto.setId(customer.getId());
@@ -44,15 +44,11 @@ public class CustomerService {
         dto.setCreditModifier(customer.getCreditModifier());
         return dto;
     }
-    
 
     public List<Customer> getAll() {
         return customerRepository.findAll();
 
     }
-
-
-
 
     public Customer save(Customer customer) {
         return customerRepository.save(customer);

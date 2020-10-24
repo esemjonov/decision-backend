@@ -10,18 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import testTask.decision.model.CreditScore;
-import testTask.decision.model.Customer;
-import testTask.decision.model.Product;
-import testTask.decision.repository.CreditScoreRepository;
-import testTask.decision.repository.CustomerRepository;
-import testTask.decision.repository.ProductRepository;
-import testTask.decision.service.CreditScoreService;
-import testTask.decision.service.CustomerService;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

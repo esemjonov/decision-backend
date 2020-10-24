@@ -6,13 +6,10 @@ import testTask.decision.dto.CustomerDto;
 import testTask.decision.exception.CreditScoreNotFoundException;
 import testTask.decision.exception.ProductNotFoundException;
 import testTask.decision.model.CreditScore;
-import testTask.decision.model.Customer;
 import testTask.decision.model.Product;
 import testTask.decision.repository.CreditScoreRepository;
-import testTask.decision.repository.CustomerRepository;
 import testTask.decision.repository.ProductRepository;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Service
@@ -31,7 +28,6 @@ public class CreditScoreService {
         this.creditScoreRepository = creditScoreRepository;
     }
 
-
     public CreditScore getById(Long id) throws CreditScoreNotFoundException {
         return creditScoreRepository.findById(id)
                 .orElseThrow(CreditScoreNotFoundException::new);
@@ -40,10 +36,6 @@ public class CreditScoreService {
     public List<CreditScore> getAll() {
         return creditScoreRepository.findAll();
     }
-
-
-
-
 
     public CreditScore save(CreditScore creditScore) {
         SetProductToCreditScore(creditScore);
@@ -110,7 +102,6 @@ public class CreditScoreService {
 
     }
 
-
     private void CheckPeriod(CreditScore creditScore) {
         if (creditScore.getLoanPeriodMonths() < creditScore.getProduct().getLoanPeriodMin()
                 || creditScore.getProduct().getLoanPeriodMax() < creditScore.getLoanPeriodMonths()   )
@@ -118,8 +109,4 @@ public class CreditScoreService {
             creditScore.setStatus("Denied");
         }
     }
-
-
-
-
 }

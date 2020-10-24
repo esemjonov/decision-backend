@@ -3,7 +3,6 @@ package testTask.decision.service;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import testTask.decision.model.CreditScore;
@@ -12,10 +11,6 @@ import testTask.decision.model.Product;
 import testTask.decision.repository.CreditScoreRepository;
 import testTask.decision.repository.CustomerRepository;
 import testTask.decision.repository.ProductRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest()
 @AutoConfigureMockMvc

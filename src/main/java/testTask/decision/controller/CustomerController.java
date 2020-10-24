@@ -13,15 +13,11 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(value = "customers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
-
-
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
-
-
 
     @GetMapping("")
     public List<Customer> all() {
@@ -45,5 +41,4 @@ public class CustomerController {
     List<CustomerDto> getByIdentityCode(@PathVariable String identityCode) {
         return customerService.getByIdentityCode(identityCode);
     }
-
 }

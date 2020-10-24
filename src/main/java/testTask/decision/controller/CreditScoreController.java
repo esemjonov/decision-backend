@@ -1,12 +1,9 @@
 package testTask.decision.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import testTask.decision.exception.CreditScoreNotFoundException;
 import testTask.decision.model.CreditScore;
-import testTask.decision.repository.CreditScoreRepository;
 import testTask.decision.service.CreditScoreService;
 
 import java.util.List;
@@ -38,6 +35,4 @@ public class CreditScoreController {
     CreditScore newCreditScore(@RequestBody CreditScore creditScore) {
         return creditScoreService.save(creditScore);
     }
-
-
 }
