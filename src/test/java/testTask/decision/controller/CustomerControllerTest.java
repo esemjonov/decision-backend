@@ -45,9 +45,6 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.length()", equalTo(4)));
     }
 
-
-
-
     @Test
     void shouldBeSearchRestultIdentityCode() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/49002010987")
@@ -56,7 +53,6 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.[0].identityCode", equalTo("49002010987")));
     }
 
-
     @Test
     void shouldBeCustomerIdentityCodeEmpty() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/47777010987")
@@ -64,8 +60,6 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
-
-
 
     private Customer createCustomer() {
         return Customer.builder()

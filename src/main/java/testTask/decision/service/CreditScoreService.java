@@ -29,7 +29,6 @@ public class CreditScoreService {
         this.creditScoreRepository = creditScoreRepository;
     }
 
-
     public List<CreditScore> getAll() {
         return creditScoreRepository.findAll();
     }
@@ -104,7 +103,6 @@ public class CreditScoreService {
         {
             creditScore.setStatus("Denied");
         }
-
     }
 
     private void CheckPeriod(CreditScore creditScore) {
