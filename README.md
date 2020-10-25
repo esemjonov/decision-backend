@@ -1,5 +1,7 @@
 ### Run Service
-Run application from IntelliJ
+1) Run backend application from IntelliJ
+2) Cd into frontend dir and run command 
+```npm run serve```
 
 ### Swagger 
 http://localhost:8080/api/v2/api-docs
