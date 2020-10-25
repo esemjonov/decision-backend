@@ -24,12 +24,6 @@ public class CustomerController {
         return customerService.getAll();
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
-    Customer getCustomerById(@PathVariable Long id) {
-        return customerService.getById(id);
-    }
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     Customer newCustomer(@RequestBody Customer customer) {

@@ -21,15 +21,6 @@ public class CustomerService {
 
     private ModelMapper modelMapper;
 
-    private CustomerDto convertToDto(Customer customer) {
-        return modelMapper.map(customer, CustomerDto.class);
-    }
-
-    public Customer getById(Long id) throws  CustomerNotFoundException{
-        return customerRepository.findById(id)
-                .orElseThrow(CustomerNotFoundException::new);
-    }
-
     public List<CustomerDto> getByIdentityCode(String identityCode) throws  CustomerNotFoundException{
         return customerRepository.findAllByIdentityCodeLike(identityCode).stream()
                 .map(this::convertCustomer)
@@ -40,7 +31,7 @@ public class CustomerService {
     private CustomerDto convertCustomer(Customer customer) {
         CustomerDto dto = new CustomerDto();
         dto.setId(customer.getId());
-        dto.setIdentitycode(customer.getIdentityCode());
+        dto.setIdentityCode(customer.getIdentityCode());
         dto.setCreditModifier(customer.getCreditModifier());
         return dto;
     }

@@ -6,6 +6,7 @@ import testTask.decision.dto.CustomerDto;
 import testTask.decision.exception.CreditScoreNotFoundException;
 import testTask.decision.exception.ProductNotFoundException;
 import testTask.decision.model.CreditScore;
+import testTask.decision.model.Customer;
 import testTask.decision.model.Product;
 import testTask.decision.repository.CreditScoreRepository;
 import testTask.decision.repository.ProductRepository;
@@ -28,10 +29,6 @@ public class CreditScoreService {
         this.creditScoreRepository = creditScoreRepository;
     }
 
-    public CreditScore getById(Long id) throws CreditScoreNotFoundException {
-        return creditScoreRepository.findById(id)
-                .orElseThrow(CreditScoreNotFoundException::new);
-    }
 
     public List<CreditScore> getAll() {
         return creditScoreRepository.findAll();
@@ -60,7 +57,6 @@ public class CreditScoreService {
     private void SetApprovedValues (CreditScore creditScore) {
         CustomerDto customer = customerService.getByIdentityCode(creditScore.getIdentityCode()).get(0);
         Double creditModifier = Double.valueOf(customer.getCreditModifier());
-
         Integer newLoanAmount = ensureRange((int)(creditModifier * creditScore.getLoanPeriodMonths()), creditScore.getProduct().getLoanAmountMin(),creditScore.getProduct().getLoanAmountMax());
         creditScore.setApprovedLoanAmount(newLoanAmount);
         Integer newPeriod = ensureRange((int)(newLoanAmount/creditModifier),creditScore.getProduct().getLoanPeriodMin(),creditScore.getProduct().getLoanPeriodMax());
@@ -69,7 +65,16 @@ public class CreditScoreService {
     }
 
     private void SetCreditApplicationStatus(CreditScore creditScore){
-        String creditModifier = customerService.getByIdentityCode(creditScore.getIdentityCode()).get(0).getCreditModifier();
+        List<CustomerDto> foundCustomer = customerService.getByIdentityCode(creditScore.getIdentityCode());
+        String creditModifier = "";
+
+        if (foundCustomer.size() == 0 ){
+            creditModifier = "debt";
+        }
+        else {
+            creditModifier =  foundCustomer.get(0).getCreditModifier();
+        }
+
 
         if (creditModifier.equals("debt")){
             SetDebtStatus(creditScore);

@@ -121,6 +121,18 @@ class CreditScoreControllerTest {
     }
 
 
+    @Test
+    void shouldBeInvalidIdentityCode() throws Exception {
+        CreditScore savedCreditScore = createCreditScore().toBuilder().identityCode("Saiake").build();
+        mockMvc.perform(MockMvcRequestBuilders.post("/creditscore")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(savedCreditScore)))
+                .andExpect(jsonPath("$.identityCode", equalTo(savedCreditScore.getIdentityCode())))
+                .andExpect(jsonPath("$.status", equalTo("Dept")))
+                .andExpect(jsonPath("$.creditScore", equalTo(0.0)))
+                .andExpect(status().isCreated());
+    }
+
     private CreditScore createCreditScore() {
         return CreditScore.builder()
                 .identityCode(IDENTITY_CODE)

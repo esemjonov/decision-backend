@@ -12,8 +12,8 @@ public class CustomerDto {
     @ApiModelProperty(notes = "Customer ID")
     private Long id;
 
-    @ApiModelProperty(notes = "Customer identitycode")
-    private String identitycode;
+    @ApiModelProperty(notes = "Customer identityCode")
+    private String identityCode;
 
     @ApiModelProperty(notes = "Customer creditModifier")
     private String creditModifier;

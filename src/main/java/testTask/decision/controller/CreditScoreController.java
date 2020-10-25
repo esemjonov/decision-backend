@@ -25,11 +25,6 @@ public class CreditScoreController {
         return creditScoreService.getAll();
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
-    public CreditScore findById(@PathVariable Long id) {
-        return creditScoreService.getById(id);
-    }
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     CreditScore newCreditScore(@RequestBody CreditScore creditScore) {
